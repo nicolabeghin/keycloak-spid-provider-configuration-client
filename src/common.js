@@ -40,8 +40,12 @@ exports.enrichIdpWithConfigData = function (idpOriginal) {
         ipa_entity_code: idpOriginal.code,
         entity_name: idpOriginal.organization_name,
         displayName: idpOriginal.organization_display_name,
+        registry_link: idpOriginal.registry_link.replace('?output=json', ''),
         metadata_url: idpOriginal.registry_link.replace('?output=json', '')
     };
+    if (config.spidMetadataAlternativeURLEnabled) {
+        idp['metadata_url']=config.spidMetadataAlternativeURLPrefix + idpOriginal.file_name;
+    }
     let cleanedupSpidName = idp.entity_name.replace('TI Trust Technologies', 'Tim').replace(/ ID|SPIDItalia | S\.C\.p\.A\.| S\.p\.A\.| srl| spa| italiane|PEC/ig, '');
     idp.alias = slugify(SPID_ALIAS_PREFIX + cleanedupSpidName).toLowerCase();
     if (idp.metadata_url != config.spidValidatorIdPMetadataURL) { // do not tamper official name as per AgID guidelines
@@ -55,7 +59,8 @@ exports.enrichIdpWithConfigData = function (idpOriginal) {
         organizationDisplayNames: config.organizationDisplayNames,
         organizationUrls: config.organizationUrls,
         attributeConsumingServiceName: config.attributeConsumingServiceName,
-        metadataDescriptorUrl: idp.metadata_url
+        metadataDescriptorUrl: idp.metadata_url,
+        useMetadataDescriptorUrl: true
     };
     return idp;
 }

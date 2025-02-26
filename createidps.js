@@ -40,7 +40,8 @@ if (config.createSpidValidatorIdP === 'true') {
         code: config.spidValidatorIdPAlias,
         organization_name: config.spidValidatorIdPAlias,
         organization_display_name: config.spidValidatorIdPDisplayName,
-        registry_link: config.spidValidatorIdPMetadataURL
+        registry_link: config.spidValidatorIdPMetadataURL,
+        file_name: 'validator.xml'
     }
     getOfficialSpididPsMetadata$ = concat(getOfficialSpididPsMetadata$, of(enrichIdpWithConfigData(spidValidatorIdPOfficialMetadata)))
 }
@@ -50,7 +51,8 @@ if (config.createSpidDemoIdP === 'true') {
         code: config.spidDemoIdPAlias,
         organization_name: config.spidDemoIdPAlias,
         organization_display_name: config.spidDemoIdPAlias,
-        registry_link: config.spidDemoIdPMetadataURL
+        registry_link: config.spidDemoIdPMetadataURL,
+        file_name: 'demo.xml'
     }
     getOfficialSpididPsMetadata$ = concat(getOfficialSpididPsMetadata$, of(enrichIdpWithConfigData(spidDemoIdPOfficialMetadata)))
 }
@@ -91,7 +93,7 @@ var enrichedModels$ = getKeycloakImportConfigModels$
         }
         let merged = {...idPTemplate, ...firstLevel}
         merged.config = configIdp
-        merged.config.metadataDescriptorUrl=idPOfficialMetadata.metadata_url;
+        merged.config.metadataDescriptorUrl=idPOfficialMetadata.registry_link;
         return merged
     }))
 
