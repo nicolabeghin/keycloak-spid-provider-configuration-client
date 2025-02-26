@@ -54,7 +54,15 @@ exports.httpGrabIdPsMetadata = function () {
 
 }
 
-const httpGrabKeycloaktoken = function () {
+const httpGrabKeycloaktoken = function() {
+    return new Promise(function(resolve) {
+        resolve(config.token)
+      });
+}
+
+exports.httpGrabKeycloaktoken = httpGrabKeycloaktoken
+
+const httpGrabKeycloaktokenOnce = function () {
     return axios(tokenConfig)
         .then(response => response.data.access_token)
         .catch(function (error) {
@@ -63,7 +71,7 @@ const httpGrabKeycloaktoken = function () {
         });
 }
 
-exports.httpGrabKeycloaktoken = httpGrabKeycloaktoken
+exports.httpGrabKeycloaktokenOnce = httpGrabKeycloaktokenOnce
 
 exports.httpCallKeycloakImportConfig = function (idPsMetadataUrl) {
     return httpGrabKeycloaktoken().then(token => {
@@ -80,8 +88,7 @@ exports.httpCallKeycloakImportConfig = function (idPsMetadataUrl) {
         };
         return axios(axiosConfig)
             .catch(function (error) {
-                //console.error(error);
-                console.error('Error importing IdP configuration from metadata '+idPsMetadataUrl);
+                console.error('Error importing IdP configuration from metadata - error ' + error.response.status + ' - ' + idPsMetadataUrl);
                 handleHttpError(error);
             });
     })
@@ -179,10 +186,10 @@ exports.httpCallKeycloakCreateAllMappers = function (idPAlias) {
         httpCallKeycloakCreateMapper(idPAlias, countyOfBirthMapperTemplate),
         httpCallKeycloakCreateMapper(idPAlias, mobilePhoneMapperTemplate),
         httpCallKeycloakCreateMapper(idPAlias, addressMapperTemplate),
-        httpCallKeycloakCreateMapper(idPAlias, digitalAddressMapperTemplate),
-        httpCallKeycloakCreateMapper(idPAlias, companyNameMapperTemplate),
-        httpCallKeycloakCreateMapper(idPAlias, companyAddressMapperTemplate),
-        httpCallKeycloakCreateMapper(idPAlias, vatNumberapperTemplate),
+        httpCallKeycloakCreateMapper(idPAlias, digitalAddressMapperTemplate)
+        // httpCallKeycloakCreateMapper(idPAlias, companyNameMapperTemplate),
+        // httpCallKeycloakCreateMapper(idPAlias, companyAddressMapperTemplate),
+        // httpCallKeycloakCreateMapper(idPAlias, vatNumberapperTemplate),
     ])
 }
 
