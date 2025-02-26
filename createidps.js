@@ -6,7 +6,8 @@ const {
     httpCallKeycloakImportConfig,
     httpCallKeycloakCreateIdP,
     httpCallKeycloakDeleteIdP,
-    httpCallKeycloakCreateAllMappers
+    httpCallKeycloakCreateAllMappers,
+    httpGrabKeycloaktokenOnce
 } = require('./src/http')
 
 
@@ -106,5 +107,9 @@ var createKeycloackSpidIdPsMappers$ = createSpidIdPsOnKeycloak$.pipe(mergeMap(id
     }))
 }))
 
-
-createKeycloackSpidIdPsMappers$.subscribe(console.log)
+// retrieve a single keycloak token before starting
+httpGrabKeycloaktokenOnce().then(token => {
+    console.log('Successfully retrieved Keycloak token');
+    config.token = token;
+    createKeycloackSpidIdPsMappers$.subscribe(console.log);
+});
