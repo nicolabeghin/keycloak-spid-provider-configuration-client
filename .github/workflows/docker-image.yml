@@ -9,6 +9,8 @@ jobs:
     - uses: actions/checkout@v4
     - name: Setup configuration
       run: cp .env-example .env
+    - name: Setup configuration
+      run: sudo apt-get -y install make
     - name: Build the Docker image
-      run: docker compose build
+      run: make build
 

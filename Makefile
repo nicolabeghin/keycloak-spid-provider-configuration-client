@@ -1,12 +1,11 @@
 start: createfolders build
-	mkdir -p log
-	docker compose up
+	docker run --net=host -w /usr/src/app --rm -v ${PWD}/log:/usr/src/app/log spidclient:latest
 
 createfolders:
 	mkdir -p log || true
 
 build:
-	docker compose build
+	docker build -t spidclient .
 
 download-metadatas:
 	rm -fr entities-idp || true
