@@ -38,7 +38,7 @@ If you have a local [spid-saml-check](https://github.com/italia/spid-saml-check)
 
 ```
 createSpidTestDemoIdP = true
-spidTestDemoIdpMetadataURL = https://localhost:8443/demo/metadata.xml
+spidTestDemoIdPMetadataURL = https://localhost:8443/demo/metadata.xml
 ```
 
 In both cases, make sure that Keycloak can reach the `spidTestIdPMetadataURL` and `spidTestDemoIdPMetadataURL` URLs and [trusts the `spid-saml-check` certificate](https://www.keycloak.org/server/keycloak-truststore#_configuring_the_system_truststore) (found in `spid-saml-check/spid-validator/config/spid-saml-check.crt`). You can create a new certificate based on your domain (if different from `localhost:8443`) with the following command:
