@@ -40,3 +40,6 @@ activemq-data
 #########
 .env
 *.log
+
+download.sh
+spid-sp-test.xml

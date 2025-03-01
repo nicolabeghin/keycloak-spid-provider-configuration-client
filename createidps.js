@@ -30,7 +30,8 @@ if (config.createSpidTestIdP === 'true') {
         code: config.spidTestIdPAlias,
         organization_name: config.spidTestIdPAlias,
         organization_display_name: config.spidTestIdPAlias,
-        registry_link: config.spidTestIdPMetadataURL
+        registry_link: config.spidTestIdPMetadataURL,
+        file_name: 'spid-saml-check.xml'
     }
     getOfficialSpididPsMetadata$ = concat(getOfficialSpididPsMetadata$, of(enrichIdpWithConfigData(spidTestIdPOfficialMetadata)));    
 }
@@ -57,16 +58,34 @@ if (config.createSpidDemoIdP === 'true') {
     getOfficialSpididPsMetadata$ = concat(getOfficialSpididPsMetadata$, of(enrichIdpWithConfigData(spidDemoIdPOfficialMetadata)))
 }
 
-
-var noIdpToSetUp; 
-getOfficialSpididPsMetadata$.pipe(isEmpty()).subscribe(r => {
-    noIdpToSetUp = r;
-});
-
-if(noIdpToSetUp){
-    console.error("No idp configured to be set up, exiting");
-    return;
+if (config.createSpidTestDemoIdP === 'true') {
+    let spidTestLocalDemoMetadata = {
+        code: config.spidTestDemoIdPAlias,
+        organization_name: config.spidTestDemoIdPAlias,
+        organization_display_name: config.spidTestDemoIdPAlias,
+        registry_link: config.spidTestDemoIdpMetadataURL,
+        file_name: 'spid-saml-check-demo.xml'
+    }
+    getOfficialSpididPsMetadata$ = concat(getOfficialSpididPsMetadata$, of(enrichIdpWithConfigData(spidTestLocalDemoMetadata)));       
 }
+
+if (config.createSpidSpTestIdP === 'true') {
+    let spidSpTestMetadata = {
+        code: config.spidSpTestIdPAlias,
+        organization_name: config.spidSpTestIdPAlias,
+        organization_display_name: config.spidSpTestIdPAlias,
+        registry_link: config.spidSpTestIdPMetadataURL,
+        file_name: 'spid-sp-test.xml'
+    }
+    getOfficialSpididPsMetadata$ = concat(getOfficialSpididPsMetadata$, of(enrichIdpWithConfigData(spidSpTestMetadata)));       
+}
+
+getOfficialSpididPsMetadata$.pipe(isEmpty()).subscribe(noIdpToSetUp => {
+    if (noIdpToSetUp) {
+        console.error("No idp configured to be set up, exiting");
+        process.exit(1);
+    }
+});
 
 //getOfficialSpididPsMetadata$.subscribe(console.log);
 
