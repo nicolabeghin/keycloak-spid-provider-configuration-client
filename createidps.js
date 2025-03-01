@@ -63,7 +63,7 @@ if (config.createSpidTestDemoIdP === 'true') {
         code: config.spidTestDemoIdPAlias,
         organization_name: config.spidTestDemoIdPAlias,
         organization_display_name: config.spidTestDemoIdPAlias,
-        registry_link: config.spidTestDemoIdpMetadataURL,
+        registry_link: config.spidTestDemoIdPMetadataURL,
         file_name: 'spid-saml-check-demo.xml'
     }
     getOfficialSpididPsMetadata$ = concat(getOfficialSpididPsMetadata$, of(enrichIdpWithConfigData(spidTestLocalDemoMetadata)));       
