@@ -88,7 +88,7 @@ exports.httpCallKeycloakImportConfig = function (idPsMetadataUrl) {
         };
         return axios(axiosConfig)
             .catch(function (error) {
-                console.error('Error importing IdP configuration from metadata - error ' + error.response.status + ' - ' + idPsMetadataUrl);
+                console.error('Error importing IdP configuration from metadata - error code ' + (error.response ? error.response.status : 'unknown') + ' - ' + idPsMetadataUrl);
                 handleHttpError(error);
             });
     })

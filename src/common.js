@@ -43,7 +43,7 @@ exports.enrichIdpWithConfigData = function (idpOriginal) {
         registry_link: idpOriginal.registry_link.replace('?output=json', ''),
         metadata_url: idpOriginal.registry_link.replace('?output=json', '')
     };
-    if (config.spidMetadataAlternativeURLEnabled) {
+    if (config.spidMetadataAlternativeURLEnabled === 'true' && idpOriginal.file_name) {
         idp['metadata_url']=config.spidMetadataAlternativeURLPrefix + idpOriginal.file_name;
     }
     let cleanedupSpidName = idp.entity_name.replace('TI Trust Technologies', 'Tim').replace(/ ID|SPIDItalia | S\.C\.p\.A\.| S\.p\.A\.| srl| spa| italiane|PEC/ig, '');
