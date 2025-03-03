@@ -53,7 +53,7 @@ If you want to use [spid-sp-test](https://github.com/italia/spid-sp-test), set t
 
 ```
 createSpidSpTestIdP = true
-spidSpTestIdPMetadataURL = http://localhost/spid-sp-test.xml
+spidSpTestIdPMetadataURL = https://yourdomain.com/spid-sp-test.xml
 ```
 
 Make sure you can uploaded the spid-sp-test metadata.xml to a Keycloak-reachable URL as above. The XML file can be generated with 
