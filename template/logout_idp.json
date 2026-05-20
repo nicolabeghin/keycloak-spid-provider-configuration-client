@@ -8,7 +8,7 @@
   "addReadTokenRoleOnCreate": false,
   "authenticateByDefault": false,
   "linkOnly": false,
-  "firstBrokerLoginFlowAlias": "first broker login (SPID)",
+  "firstBrokerLoginFlowAlias": "first broker login SPID",
   "config": {
     "validateSignature": "false",
     "forceAuthn": "true",
