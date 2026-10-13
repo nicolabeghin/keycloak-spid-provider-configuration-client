@@ -94,6 +94,38 @@ Opt-in attributes not in the default list: `companyName`, `companyAddress`, `iva
 
 Set `requestedAttributesStrict = false` to tolerate unknown attribute names with a warning. Default is `true` (fail fast on typos).
 
+## IPv6 readiness check
+Most SPID IdPs (and `registry.spid.gov.it`) have no AAAA record, so an IPv6-only Docker host can't reach them directly. `spid-idp-ipv6-readiness.js` checks this and, for hosts without IPv6, resolves a NAT64 address through a DNS64 resolver.
+
+    make ipv6-readiness
+
+It reads the IdP list from `spidMetadataOfficialURL` in `.env` and runs inside the `spidclient` Docker image (the current `.env` is mounted read-only). For the registry host and every host in the IdPs' `single_sign_on_service` / `single_logout_service` endpoints it prints a table (native AAAA, status `NATIVE` / `NAT64` / `NONE`, IPv6 address) followed by a ready-to-paste `extra_hosts` block for `docker-compose.yml`:
+
+```
+extra_hosts:
+  - "registry.spid.gov.it:2a00:1098:2b::1:1266:90c"
+  - "id.eht.eu:2a00:1098:2b::1:1266:4988"
+  - "id.lepida.it:2a00:1098:2b::1:c33e:a2db"
+  - "identity.infocert.it:2a00:1098:2b::1:22fc:8e00"
+  - "identity.sieltecloud.it:2a00:1098:2b::1:b96b:b934"
+  - "idp.namirialtsp.com:2a00:1098:2b::1:b9d9:1d0d"
+  - "login.id.tim.it:2a00:1098:2b::1:3e4d:3c63"
+  - "loginspid.aruba.it:2a00:1098:2b::1:d93d:803"
+  - "loginspid.infocamere.it:2a00:1098:2b::1:5052:23"
+  - "posteid.poste.it:2a00:1098:2b::1:4e8:810"
+  - "spid.intesigroup.com:2a00:1098:2b::1:c20f:2c70"
+  - "spid.register.it:2a00:1098:2b::1:5158:3b13"
+  - "spid.teamsystem.com:2a00:1098:2b::1:b064:ad2b"
+```
+
+The block above is a reference snapshot of one run; regenerate it for current addresses.
+
+Notes:
+- The registry is listed first, the other hosts alphabetically. DNS64 answers are round-robin, so the lowest address is picked to keep the output stable between runs.
+- The command exits with code 1 if some host has no IPv6 address at all (neither native nor via NAT64).
+- NAT64 addresses embed the IdP's IPv4 address: re-run periodically, as the pinned entries go stale if an IdP changes IP.
+- DNS64 servers default to `2a01:4f9:c010:3f02::1` (backup `2a00:1098:2c::1`); override with the `NAT64_DNS` / `NAT64_DNS_BACKUP` environment variables.
+
 ## SPID access button integrated in Keycloak theme
 https://github.com/nicolabeghin/keycloak-spid-provider-configuration-client/wiki/SPID-access-button-integrated-in-Keycloak-theme
 <img width="285" alt="image" src="https://user-images.githubusercontent.com/2743637/212535193-aae9e8ce-b4f1-4411-9811-def46419bacf.png">

@@ -17,3 +17,6 @@ download-metadatas:
 	curl -s https://registry.spid.gov.it/entities-idp?&output=json | jq -r '.[] | ["curl","-s","-o", "entities-idp/",.file_name,.registry_link] | join(" ")' | sed 's/\?output=json//g' >> download.sh
 	chmod +x download.sh
 
+
+ipv6-readiness: build
+	docker run --rm -v ${PWD}/.env:/usr/src/app/.env:ro spidclient:latest node spid-idp-ipv6-readiness.js
